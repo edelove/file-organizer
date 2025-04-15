@@ -12,31 +12,32 @@ Cross-platform (Windows, Linux, macOS)
 Packaged into `.exe` via PyInstaller  
 Installable as CLI tool via `setup.py`
 
-# Logging
-All operations are logged to organize.log.
-The log rotates automatically to prevent large file sizes.
 
-# Arguments
---directory DIRECTORY => Point the directory you want to organize
---dry-run (FALSE by default) => Specify if you want to only see what will be done without making changes.
+## Arguments
+| Flag             | Description                                                   |
+|------------------|---------------------------------------------------------------|
+| `--directory`     | Required. Path to the folder you want to organize             |
+| `--dry-run`       | Optional. Simulates actions without moving files (default: `False`) |
 
-# Usage
+---
 
-### Run via Python
+## Logging
+All operations are logged to `organize.log` in real-time.  
+The log uses rotation (max size 1MB, 5 backups) to ensure maintainability.
+
+##  Usage
+
+##  Run via Python
 ```bash
 python file_organiser.py --directory "path_to_your_folder"
 
-# Example run
-python file_organiser.py --directory "C:\Downloads" --dry-run
-
-Input directory:
+# Example Directory - Before
 C:\Downloads
-│
 ├── resume.pdf
 ├── image.png
 ├── document.docx
 
-Results:
+# Example Directory - After
 C:\Downloads
 ├── PDF
 │   └── resume.pdf
@@ -45,11 +46,10 @@ C:\Downloads
 ├── DOCX
 │   └── document.docx
 
-# CLI Installation
+#CLI Installation
 pip install .
 organizer --directory "C:\path\to\folder"
-
-
+'''
 
 # Author
 edelove
