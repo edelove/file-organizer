@@ -3,21 +3,28 @@ A smart Python-based file organizer that scans a directory and organizes files i
 Cross-platform ready (Windows, Linux, macOS), with safe handling of file locks, permissions, and invalid paths.
 
 # Features
-Organizes files into folders by extension (e.g. `.pdf` → `/PDF`)  
-Automatically resolves filename conflicts (`file (1).pdf`, `file (2).pdf`)  
-Skips locked/inaccessible/corrupted files  
-Simulates changes with `--dry-run` mode  
-Logs all operations to `organize.log` (with rotating logs)  
-Cross-platform (Windows, Linux, macOS)  
-Packaged into `.exe` via PyInstaller  
-Installable as CLI tool via `setup.py`
+Organizes files by extension (e.g. .pdf → /PDF)
+
+Resolves filename conflicts (file (1).pdf, file (2).pdf)
+
+Skips locked, inaccessible or invalid files
+
+Dry-run mode to preview changes before execution
+
+Real-time logging with rotating file logs
+
+Cross-platform: Windows, Linux, macOS
+
+CLI + GUI support
+
+Installable via setup.py or packaged into .exe
 
 
 ## Arguments
-| Flag             | Description                                                   |
-|------------------|---------------------------------------------------------------|
-| `--directory`     | Required. Path to the folder you want to organize             |
-| `--dry-run`       | Optional. Simulates actions without moving files (default: `False`) |
+| Flag             | Description                                                        |
+|------------------|---------------------------------------------------------------     |
+| --config	Optional. Path to a .json file with multiple directories and dry-run flag   |
+
 
 ---
 
@@ -27,29 +34,42 @@ The log uses rotation (max size 1MB, 5 backups) to ensure maintainability.
 
 ##  Usage
 
-##  Run via Python
-```bash
-python file_organiser.py --directory "path_to_your_folder"
+##  Developer Installation
+# Install dependencies
+pip install -r requirements.txt
 
-# Example Directory - Before
-C:\Downloads
-├── resume.pdf
-├── image.png
-├── document.docx
-
-# Example Directory - After
-C:\Downloads
-├── PDF
-│   └── resume.pdf
-├── PNG
-│   └── image.png
-├── DOCX
-│   └── document.docx
-
-#CLI Installation
+# Build CLI entry point
 pip install .
-organizer --directory "C:\path\to\folder"
-'''
+
+
+## CLI Installation
+# Single-folder sort (real mode)
+python file_organiser.py --directory "C:\Downloads"
+
+# Preview-only mode (no changes)
+python file_organiser.py --directory "C:\Downloads" --dry-run
+
+# Load from config file
+python file_organiser.py --config user_config.json
+
+
+## GUI Usage
+# Run the graphical interface
+python gui.py
+
+In the GUI:
+
+Add one or more folders to sort
+
+Enable dry-run if needed
+
+Click "Run Organizer" to start
+
+Config is saved automatically on run
+
+During execution, buttons are temporarily disabled to prevent conflicts.
+
+
 
 # Author
 edelove
