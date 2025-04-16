@@ -329,7 +329,7 @@ log_frame.pack(pady=10,padx=15)
 
 
 # Loading label
-status_label = tk.Label(root,text="",fg="green",font=("Segoe UI",12))
+status_label = tk.Label(root,text="",fg="green",font=("Segoe UI",12), bg="#1e1e1e")
 status_label.pack(pady=5)
 
 root.mainloop()
