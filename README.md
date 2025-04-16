@@ -1,75 +1,67 @@
-# File organizer
-A smart Python-based file organizer that scans a directory and organizes files into folders by their extension.  
-Cross-platform ready (Windows, Linux, macOS), with safe handling of file locks, permissions, and invalid paths.
+# File Organizer
 
-# Features
-Organizes files by extension (e.g. .pdf → /PDF)
-
-Resolves filename conflicts (file (1).pdf, file (2).pdf)
-
-Skips locked, inaccessible or invalid files
-
-Dry-run mode to preview changes before execution
-
-Real-time logging with rotating file logs
-
-Cross-platform: Windows, Linux, macOS
-
-CLI + GUI support
-
-Installable via setup.py or packaged into .exe
-
-
-## Arguments
-| Flag             | Description                                                        |
-|------------------|---------------------------------------------------------------     |
-| --config	Optional. Path to a .json file with multiple directories and dry-run flag   |
-
+Smart. Safe. Straight to the point.  
+Python-based tool that organizes files into folders by extension — no duplicates, no clutter, just results.
 
 ---
 
-## Logging
-All operations are logged to `organize.log` in real-time.  
-The log uses rotation (max size 1MB, 5 backups) to ensure maintainability.
+## Features
 
-##  Usage
+- Sorts files into folders by extension (`.pdf` → `/PDF`)
+- Auto-resolves filename conflicts (`file (1).pdf`, `file (2).pdf`)
+- Skips locked, inaccessible or corrupt files
+- Dry-run mode to simulate actions without making changes
+- Clean, real-time logs with rotation
+- CLI and GUI support
+- Built for Windows, Linux, and macOS
+- GUI saves config automatically — no manual steps needed
 
-##  Developer Installation
-# Install dependencies
-pip install -r requirements.txt
+---
 
-# Build CLI entry point
-pip install .
+## How It Works
 
+By default, it reads from `user_config.json` — no arguments needed if using the GUI.  
+You choose folders, set dry-run or real-run, hit the button. That’s it.
 
-## CLI Installation
-# Single-folder sort (real mode)
-python file_organiser.py --directory "C:\Downloads"
+---
 
-# Preview-only mode (no changes)
-python file_organiser.py --directory "C:\Downloads" --dry-run
+## CLI Usage
 
-# Load from config file
+> Used mainly for automation or config-based runs.
+
+# Run using config
 python file_organiser.py --config user_config.json
 
 
 ## GUI Usage
-# Run the graphical interface
 python gui.py
+Inside the GUI:
+Add one or more folders
 
-In the GUI:
+(Optional) Toggle:
+Dry Run — for simulation
+Include Subdirectories — for deep cleaning
+Clear list after run — for reset after organizing
+Click Run Organizer
+Logs appear in real-time under the file list
+All settings saved to user_config.json automatically
 
-Add one or more folders to sort
+## Logging
 
-Enable dry-run if needed
+All actions are logged in organize.log
+Log rotation enabled: 1MB max, 5 backup files
+Logs are also viewable directly in the GUI after each run
 
-Click "Run Organizer" to start
+## Developer Setup
 
-Config is saved automatically on run
+# Install dependencies
+pip install -r requirements.txt
 
-During execution, buttons are temporarily disabled to prevent conflicts.
+# Optional: install as CLI tool
+pip install .
 
+## Packaging to .exe
+Packaged cleanly with PyInstaller. Icon included. One file. No nonsense.
 
-
-# Author
+## Made by
 edelove

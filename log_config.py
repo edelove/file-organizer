@@ -3,6 +3,8 @@ from logging.handlers import RotatingFileHandler
 from constants import LOG_BACKUP_COUNT,LOG_FILENAME,LOG_MAX_BYTES
 
 def setup_logging():
+
+    open(LOG_FILENAME, "w").close()
     
     file_handler = RotatingFileHandler(
         LOG_FILENAME,

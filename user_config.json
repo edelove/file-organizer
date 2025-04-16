@@ -2,5 +2,6 @@
   "directories": [
     "C:/Users/adamc/Desktop/tstdir"
   ],
-  "dry_run": false
+  "dry_run": true,
+  "include_subdirs": false
 }

@@ -18,7 +18,7 @@ def main(config_file=None):
         for directory in config["directories"]:
             if not validate_input_directory(directory):
                 continue
-            organize_files(directory, config["dry_run"])
+            organize_files(directory, config["dry_run"], config.get("include_subdirs", False))
 
     else:
         args = parse_args()
