@@ -7,28 +7,35 @@ from core import organize_files
 
 def main(config_file=None):
     setup_logging()
-    
+
     if config_file:
         config = load_config(config_file)
-        
+
         if not config or "directories" not in config or "dry_run" not in config:
             logging.error("Invalid config file")
             sys.exit(1)
 
+        include_subdirs = config.get("include_subdirs", False)
+
         for directory in config["directories"]:
-            if not validate_input_directory(directory):
+            if not validate_input_directory(directory, include_subdirs):
                 continue
-            organize_files(directory, config["dry_run"], config.get("include_subdirs", False))
+            organize_files(directory, config["dry_run"], include_subdirs)
 
     else:
         args = parse_args()
-        checking_dir = args.directory
-        dry_run = args.dry_run
 
-        if not validate_input_directory(checking_dir):
+        if not hasattr(args, "directory"):
+            logging.error("Directory argument missing.")
             sys.exit(1)
-        organize_files(checking_dir, dry_run)
+
+        if not validate_input_directory(args.directory, args.include_subdirs):
+            sys.exit(1)
+
+        organize_files(args.directory, args.dry_run, args.include_subdirs)
+
 
 
 if __name__ == "__main__":
     main()
+

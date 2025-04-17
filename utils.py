@@ -3,17 +3,23 @@ import platform
 import logging
 from constants import DEFAULT_EXTENSION, SUPPORTED_PLATFORMS
 
-def validate_input_directory(input_dir):
-    if not os.path.exists(input_dir):
-        logging.error("Provided path does not exist: {}".format(input_dir))
+def validate_input_directory(path, include_subdirs=False):
+    if not os.path.exists(path) or not os.path.isdir(path):
+        logging.error(f"Provided path is invalid or not a directory: {path}")
         return False
-    if not os.path.isdir(input_dir):
-        logging.error("Provided path is not a directory: {}".format(input_dir))
+
+    if include_subdirs:
+        for _, _, files in os.walk(path):
+            if files:
+                return True
+        logging.error(f"Provided path (with subdirectories) is empty: {path}")
         return False
-    if not any(os.path.isfile(os.path.join(input_dir,f)) for f in os.listdir(input_dir)):
-        logging.error("Provided path is empty: {}".format(input_dir))
+    else:
+        if any(os.path.isfile(os.path.join(path, f)) for f in os.listdir(path)):
+            return True
+        logging.error(f"Provided path is empty: {path}")
         return False
-    return True
+
     
 def normalize_extension(extension):
     ext = extension.replace(".","")

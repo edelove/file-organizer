@@ -3,10 +3,29 @@ from tkinter import filedialog, messagebox, ttk
 import os
 import json
 from file_organiser import main as run_organizer
-
+import logging
 
 
 buttons_to_toggle = []
+
+import sys
+import os
+
+def resource_path(relative_path):
+    try:
+        base_path = sys._MEIPASS  # When using PyInstaller
+    except Exception:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
+
+def clear_config_file():
+    try:
+        if os.path.exists("user_config.json"):
+            os.remove("user_config.json")
+            logging.info("user_config.json deleted successfully.")
+    except Exception as e:
+        logging.warning(f"Failed to delete config: {e}")
+
 
 def browse_directories():
     dir_path = filedialog.askdirectory()
@@ -56,14 +75,6 @@ def remove_selected_folder():
     if selected_item:
         folder_tree.delete(selected_item)
 
-def browse_directories():
-    dir_path = filedialog.askdirectory()
-    if dir_path:
-        existing_dirs = folder_tree.get(0, tk.END)
-        if dir_path not in existing_dirs:
-            folder_tree.insert(tk.END, dir_path)
-        else:
-            messagebox.showinfo("Info", "This folder is already in the list.")
 
 def generate_config():
     directories = folder_tree.get(0,tk.END)
@@ -88,7 +99,10 @@ def run_frum_gui():
     toggle_buttons("disabled")
     update_status("Generating config...", "blue")
 
-    directories = folder_tree.get(0, tk.END)
+    directories = [
+        folder_tree.item(child)["text"]
+        for child in folder_tree.get_children()
+    ]
     dry_run = bool(dry_run_var.get())
     include_subdirs = bool(include_subdirs_var.get())
 
@@ -98,8 +112,7 @@ def run_frum_gui():
         toggle_buttons("normal")
         return
 
-    # Save config and proceed
-    save_config(list(directories), dry_run, include_subdirs)
+    save_config(directories, dry_run, include_subdirs)
     update_status("Running organizer...", "blue")
 
     try:
@@ -109,19 +122,37 @@ def run_frum_gui():
         messagebox.showinfo("Success", "Organizer has completed.")
     except Exception as e:
         update_status(f"Error: {e}", "red")
-        messagebox.showerror("Error","Something went wrong: {}".format(e))
+        messagebox.showerror("Error", "Something went wrong: {}".format(e))
     finally:
         toggle_buttons("normal")
         if clear_after_run_var.get():
+            refresh_folder_tree()
             for item in folder_tree.get_children():
                 folder_tree.delete(item)
+        else:
+            refresh_folder_tree()
+        
+        clear_config_file()  # <<— this stays
+
 
 def toggle_buttons(state):
     for button in buttons_to_toggle:
         button.config(state=state)
 
 def update_status(message, color="green"):
-    status_label.config(text=message,fg=color,bg="#1e1e1e",font=("Segoe UI",12,"italic","bold"))
+    status_label.config(
+        text=" " * 80,  # clear old message width visually first
+        fg=color,
+        bg="#1e1e1e",
+        font=("Segoe UI", 12, "italic", "bold")
+    )
+    root.update_idletasks()  # force update to apply spacing flush
+
+    # Now insert actual message
+    status_label.config(
+        text=message,
+        fg=color
+    )
     root.update_idletasks()
 
 def clear_interface():
@@ -132,6 +163,37 @@ def clear_interface():
     log_text.config(state=tk.DISABLED)
     update_status("Interface cleared.","lightblue")
 
+def refresh_folder_tree():
+    for parent_item in folder_tree.get_children():
+        folder_tree.delete(*folder_tree.get_children(parent_item))  # Delete children only
+
+        parent_path = folder_tree.item(parent_item, "text")
+        if not os.path.exists(parent_path):
+            continue  # Skip if folder was deleted
+
+        try:
+            items = os.listdir(parent_path)
+            for item in items:
+                full_path = os.path.join(parent_path, item)
+                display = item + "/" if os.path.isdir(full_path) else item
+                folder_tree.insert(parent_item, tk.END, text=display)
+        except Exception as e:
+            logging.warning(f"Could not refresh contents of {parent_path}: {e}")
+
+        folder_tree.item(parent_item, open=True)  # Expand the folder
+
+def on_closing():
+    if messagebox.askokcancel("Exit", "Are you sure you want to exit?"):
+        try:
+            if os.path.exists("user_config.json"):
+                os.remove("user_config.json")
+                logging.info("user_config.json deleted successfully.")
+        except Exception as e:
+            logging.warning(f"Failed to delete config: {e}")
+        root.destroy()
+
+
+
 
 # Main Frame
 
@@ -141,7 +203,10 @@ root.title("File Organizer Config")
 root.update_idletasks()
 root.minsize(root.winfo_width(), root.winfo_height())
 root.configure(bg="#1e1e1e")
-root.iconbitmap("organizer_icon_black.ico")
+icon_path = resource_path("organizer_icon_black.ico")
+if os.path.exists(icon_path):
+    root.iconbitmap(icon_path)
+root.protocol("WM_DELETE_WINDOW", on_closing)
 
 # Add folder
 def browse_directories():
@@ -214,7 +279,6 @@ style.map("Treeview",
     foreground=[("selected", "#ffffff")]
 )
 
-buttons_to_toggle.append(folder_tree)
 
 
 # Checkbox Group Frame
