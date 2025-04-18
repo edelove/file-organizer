@@ -42,5 +42,9 @@ pip install .
 Package into .exe with PyInstaller:
 pyinstaller gui.spec
 
+## License
+
+This tool is provided under a personal-use license. See [LICENSE.txt](LICENSE.txt) for more information.
+
 ## Author
 Made by: edelove
