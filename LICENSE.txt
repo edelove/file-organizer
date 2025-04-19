@@ -10,4 +10,10 @@ NOT distribute, sublicense, reverse-engineer, or modify any part of this softwar
 
 This software is provided "as is" without warranty of any kind, expressed or implied.
 
+Note: GUI version and core orchestration logic are proprietary and excluded from this license. 
+To access the full product, please purchase the premium version via Gumroad.
+
+Note: GUI version and core orchestration logic are proprietary and excluded from this license. 
+To access the full product, please purchase the premium version via Gumroad.
+
 Contact: adam.czlapinski@gmail.com
