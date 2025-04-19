@@ -1,11 +1,9 @@
-################################################# !!! !!! ###################################################################
-# This repository contains only the CLI-compatible version of File Organizer.                                               #
-# The full GUI version is available via our Gumroad store: [Buy Premium Version](dayasoftware.gumroad.com/l/file-organizer) #
-#                                                                                                                           #
-# For developers, this repo serves as a reference and base for custom CLI tools.                                            #
-# **Want to test the full version for free?**                                                                               #
-# Reach out to me at: **adam.czlapinski@gmail.com**                                                                         #
-################################################# !!! !!! ###################################################################
+# This repository contains only the CLI-compatible version of File Organizer.                                               
+ The full GUI version is available via our Gumroad store: [Buy Premium Version](dayasoftware.gumroad.com/l/file-organizer) 
+                                                                                                                           
+ For developers, this repo serves as a reference and base for custom CLI tools.                                            
+# **Want to test the full version for free?**                                                                               
+ Reach out to me at: **adam.czlapinski@gmail.com**                                                                         
 
 
 ## File Organizer
